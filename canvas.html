@@ -1,0 +1,27 @@
+<style>
+	canvas{
+		border: 1px solid #ccc
+	}
+</style>
+<canvas id="myCanvas" width="500," height="300"></canvas>
+
+<script>
+	var el = document.getElementById('myCanvas'),
+		ctx = el.getContext('2d'),
+		isDrawing;
+
+	el.onmousedown = function (e) {
+		isDrawing = true;
+		ctx.moveTo(e.clientX, e.clientY);
+	}
+
+	el.onmousemove =function (e) {
+		if(isDrawing){
+			ctx.lineTo(e.clientX, e.clientY);
+			ctx.stroke();
+		}
+	};
+	el.onmouseup = function () {
+		isDrawing = false;
+	}
+</script>

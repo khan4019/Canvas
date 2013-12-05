@@ -12,28 +12,28 @@
 		//docuemnt ready. dont work for older browser or IE
 	  if (document.readyState == "complete") {
 	    
-	    var s=window.screen,
+	    var s = window.screen,
 			width = cnvsMatrix.width = s.width,
-			height = cnvsMatrix.height,
+			height = cnvsMatrix.height = s.height-100,
 			yPositions = Array(300).join(0).split(''),
-			ctx=cnvsMatrix.getContext('2d'), 
+			ctx = cnvsMatrix.getContext('2d'), 
 			runInterval;
 		 
 		var draw = function () {
-		  ctx.fillStyle='rgba(0,0,0,.05)';
+		  ctx.fillStyle = 'rgba(0,0,0,.05)';
 		  ctx.fillRect(0,0,width,height);
-		  ctx.fillStyle='#0F0';
+		  ctx.fillStyle = '#0F0';
 		  ctx.font = '10pt Georgia';
 		  yPositions.map(function(y, index){
 			
 			var text = String.fromCharCode(1e2+Math.random()*33),
-			    x = (index * 10)+10;
+			    x = (index * 10) + 10;
 			
 		    cnvsMatrix.getContext('2d').fillText(text, x, y);
 		
-			    if(y > 100 + Math.random()*1e4)
+			    if(y > 100 + Math.random() * 1e4)
 			    {
-			      yPositions[index]=0;
+			      yPositions[index] = 0;
 			    }
 			    else
 			    {
