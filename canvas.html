@@ -7,7 +7,7 @@
 <canvas id="myCanvas" width="500," height="300"></canvas>
 
 <h3>Bezier Curve</h3>
-<canvas id="BezierCanvas" width="500," height="300"></canvas>
+<canvas id="bezierCanvas" width="500," height="300"></canvas>
 <script>	
 	// For Just a smooth curve
 	var el = document.getElementById('myCanvas'),
@@ -64,11 +64,55 @@
 	//for Bezier curve
 	//source: http://perfectionkills.com/exploring-canvas-drawing-techniques/
 
+	var el = document.getElementById('bezierCanvas'),
+		ctxBzr = el.getContext('2d'), 
+		isDrawing, points=[];
+
+	ctxBzr.lineWidth = 10;
+	ctxBzr.lineJoin = ctxBzr.lineCap ='round';
+
+	el.onmousedown = function (e) {
+		isDrawing = true;
+		points.push({x:e.clientX, y:e.clientY});
+	}
+
+	el.onmousemove = function (e) {
+		if(!isDrawing) return;
+		points.push({x:e.clientX, y:e.clientY});
+
+		ctxBzr.clearRect(0,0, ctxBzr.canvas.width, ctxBzr.canvas.height);
+
+		var p1 = points[0],
+			p2 = points[1];
+
+		ctxBzr.beginPath();
+		ctxBzr.moveTo(p1.x, p1.y);
+
+		console.log(points);
+
+		for (var i = 1, len = points.length; i < len; i++) {
+			var midPoint = midPointBtw (p1, p2);
+
+			ctxBzr.quadraticCurveTo(p1.x, p1.y, midPoint.x, midPoint.y);
+			p1= points[i];
+			p2= points[i+1];
+		};
+
+		ctxBzr.lineTo(p1.x, p1.y);
+		ctxBzr.stroke();
+	}
+
+	el.onmouseup = function (e) {
+		isDrawing = false;
+		points.length =0;
+	}
+
 	function midPointBtw(p1, p2){
 		return {
-			x:p1.x + (p2.x - p1.x) / 2;
-			y:p1.x + (p2.y - p1.y) / 2;
+			x: p1.x + (p2.x - p1.x) / 2,
+			y: p1.x + (p2.y - p1.y) / 2
 		};
 	}
-	
+
+
 </script>
