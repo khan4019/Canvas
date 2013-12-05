@@ -12,8 +12,10 @@
 
 	el.onmousedown = function (e) {
 		isDrawing = true;
-		ctx.lineWidth =10;
-		ctx.lineJoin = ctx.linecap = 'round';
+		ctx.lineWidth =10;		
+		ctx.lineJoin = ctx.lineCap = 'round';
+		ctx.shadowBlur = 10;
+		ctx.shadowColor = 'rgb(0,0,0)';
 		ctx.moveTo(e.clientX, e.clientY);
 	}
 
