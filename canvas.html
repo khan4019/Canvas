@@ -63,4 +63,12 @@
 <script>
 	//for Bezier curve
 	//source: http://perfectionkills.com/exploring-canvas-drawing-techniques/
+
+	function midPointBtw(p1, p2){
+		return {
+			x:p1.x + (p2.x - p1.x) / 2;
+			y:p1.x + (p2.y - p1.y) / 2;
+		};
+	}
+	
 </script>
