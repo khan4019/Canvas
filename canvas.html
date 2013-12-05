@@ -3,12 +3,13 @@
 		border: 1px solid #ccc
 	}
 </style>
+<h3>just a smooth curve</h3>
 <canvas id="myCanvas" width="500," height="300"></canvas>
 
-<script>
-	
-	//source: http://perfectionkills.com/exploring-canvas-drawing-techniques/
-
+<h3>Bezier Curve</h3>
+<canvas id="BezierCanvas" width="500," height="300"></canvas>
+<script>	
+	// For Just a smooth curve
 	var el = document.getElementById('myCanvas'),
 		ctx = el.getContext('2d'),
 		isDrawing, lastPoint, points = [];
@@ -58,5 +59,8 @@
 	function angleBetween(point1, point2){
 		return Math.atan2(point2.x-point1.x, point2.y -point1.y);
 	}
-
+</script>
+<script>
+	//for Bezier curve
+	//source: http://perfectionkills.com/exploring-canvas-drawing-techniques/
 </script>
