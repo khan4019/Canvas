@@ -3,7 +3,7 @@
 		border: 1px solid #ccc
 	}
 </style>
-<h3>just a smooth curve</h3>
+<h3>Random Radius Opacit</h3>
 <canvas id="myCanvas" width="500," height="300"></canvas>
 
 <h3>Bezier Curve</h3>
@@ -12,37 +12,41 @@
 	// For Just a smooth curve
 	var el = document.getElementById('myCanvas'),
 		ctx = el.getContext('2d'),
-		isDrawing, lastPoint, points = [];
-
-	ctx.lineWidth =10;		
+		isDrawing, lastPoint, points = [], radius = 15;
+	
 	ctx.lineJoin = ctx.lineCap = 'round';
-	ctx.shadowBlur = 10;
-	ctx.shadowColor = 'rgb(0,0,0)';
+	ctx.fillStyle = 'red';
+	// ctx.shadowBlur = 10;
+	// ctx.shadowColor = 'rgb(0,0,0)';
 
 	el.onmousedown = function (e) {
 		isDrawing = true;		
-		lastPoint = {x:e.clientX, y:e.clientY};
+		points.push({
+			x:e.clientX, 
+			y:e.clientY,
+			radius:getRandomInt(10,30),
+			opacity:Math.random()
+		});
 	}
 
 	el.onmousemove =function (e) {
 		
 		if(!isDrawing) return;
 
-		var currentPoint = {x:e.clientX, y:e.clientY},
-			dist = distanceBetween(lastPoint, currentPoint),
-			angle = angleBetween(lastPoint, currentPoint);
+		points.push({
+			x:e.clientX, 
+			y:e.clientY,
+			radius:getRandomInt(10,30),
+			opacity:Math.random()
+		});
 
-		for (var i = 0; i < dist; i++) {
-			x= lastPoint.x+(Math.sin(angle)*i);
-			y=lastPoint.y+(Math.cos(angle)*i);
-			var radgrad = ctx.createRadialGradient(x, y, 10, x, y, 20);
-			
-			radgrad.addColorStop(0,'#000');
-			radgrad.addColorStop(0.5,'rgba(0,0,0,0.5)');
-			radgrad.addColorStop(1,'rgba(0,0,0,0)');
-			ctx.fillStyle = radgrad;
+		ctx.clearRect(0,0,ctx.canvas.width, ctx.canvas.height);
 
-			ctx.fillRect(x-20, y-20, 40,40);
+		for (var i = 0; i < points.length; i++) {
+			ctx.beginPath();
+			ctx.globalAlpha = points[i].opacity;
+			ctx.arc(points[i].x, points[i].y, points[i].radius, false, Math.PI*2,false);
+			ctx.fill();
 		};
 		lastPoint = currentPoint;		
 	};
@@ -68,7 +72,7 @@
 		ctxBzr = el.getContext('2d'), 
 		isDrawing, points=[];
 
-	ctxBzr.lineWidth = 10;
+	ctxBzr.lineWidth = 3;
 	ctxBzr.lineJoin = ctxBzr.lineCap ='round';
 
 	el.onmousedown = function (e) {
@@ -114,5 +118,7 @@
 		};
 	}
 
-
+	function getRandomInt(min, max){
+		return Math.floor(Math.random()*(max-min+1))+min;
+	}
 </script>
