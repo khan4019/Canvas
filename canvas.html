@@ -3,7 +3,7 @@
 		border: 1px solid #ccc
 	}
 </style>
-<h3>Random Radius Opacit</h3>
+<h3>neighbor points</h3>
 <canvas id="myCanvas" width="500," height="300"></canvas>
 
 <h3>Randomized Everything</h3>
@@ -12,21 +12,15 @@
 	// For Just a smooth curve
 	var el = document.getElementById('myCanvas'),
 		ctx = el.getContext('2d'),
-		isDrawing, lastPoint, points = [], radius = 15;
+		isDrawing, points = [];
 	
+	ctx.lineWidth = 1;
 	ctx.lineJoin = ctx.lineCap = 'round';
-	ctx.fillStyle = 'red';
-	// ctx.shadowBlur = 10;
-	// ctx.shadowColor = 'rgb(0,0,0)';
-
+	
 	el.onmousedown = function (e) {
 		isDrawing = true;		
-		points.push({
-			x:e.clientX, 
-			y:e.clientY,
-			radius:getRandomInt(10,30),
-			opacity:Math.random()
-		});
+		points =[];
+		points.push({x:e.clientX, y:e.clientY});		
 	}
 
 	el.onmousemove =function (e) {
@@ -35,20 +29,31 @@
 
 		points.push({
 			x:e.clientX, 
-			y:e.clientY,
-			radius:getRandomInt(10,30),
-			opacity:Math.random()
+			y:e.clientY
 		});
 
-		ctx.clearRect(0,0,ctx.canvas.width, ctx.canvas.height);
+		var len = points.length, dx, dy, d;
+		
+		ctx.beginPath();		
+		ctx.moveTo(points[len -2].x, points[len-2].y);
+		ctx.lineTo(points[len-1].x, points[len-1].y);
+		ctx.stroke();
 
-		for (var i = 0; i < points.length; i++) {
-			ctx.beginPath();
-			ctx.globalAlpha = points[i].opacity;
-			ctx.arc(points[i].x, points[i].y, points[i].radius, false, Math.PI*2,false);
-			ctx.fill();
+		for (var i = 0; i < len; i++) {
+			dx = points[i].x - points[len-1].x;
+			dy = points[i].y -points[len-1].y;
+			d = dx*dx + dy*dy;
+
+			if(d<2000 && Math.random() > d/2000){
+				ctx.beginPath();
+				ctx.strokeStyle ='rgba(0,0,0,0.3)';
+				ctx.moveTo(points[len-1].x + (dx*0.5), points[len-1].y + (dy*0.5));
+				ctx.lineTo(points[len-1].x - (dx*0.5), points[len-1].y - (dy*0.5));
+				ctx.stroke();
+			}
+
 		};
-		lastPoint = currentPoint;		
+		
 	};
 
 	el.onmouseup = function () {
