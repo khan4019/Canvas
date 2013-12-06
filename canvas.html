@@ -3,11 +3,12 @@
 		border: 1px solid #ccc
 	}
 </style>
-<h3>neighbor points</h3>
-<canvas id="myCanvas" width="500," height="300"></canvas>
-
 <h3>Randomized Everything</h3>
-<canvas id="bezierCanvas" width="500," height="300"></canvas>
+<canvas id="starCanvas" width="500," height="300"></canvas>
+
+<!-- <h3>neighbor points</h3>
+<canvas id="myCanvas" width="500," height="300"></canvas> -->
+
 <script>	
 	// For Just a smooth curve
 	var el = document.getElementById('myCanvas'),
@@ -73,12 +74,9 @@
 	//for Randomized everything
 	//source: http://perfectionkills.com/exploring-canvas-drawing-techniques/
 
-	var el2 = document.getElementById('bezierCanvas'),
+	var el2 = document.getElementById('starCanvas'),
 		ctx2 = el2.getContext('2d'), 
 		isDrawing2, points2=[];
-
-	ctx2.lineWidth = 3;
-	ctx2.lineJoin = ctx2.lineCap ='round';
 
 	el2.onmousedown = function (e) {
 		isDrawing2 = true;
@@ -93,7 +91,7 @@
 		ctx2.clearRect(0,0, ctx2.canvas.width, ctx2.canvas.height);
 
 
-		for (var i = 1, len = points2.length; i < len; i++) {
+		for (var i = 0, len = points2.length; i < len; i++) {
 			drawStar(points2[i]);
 		};
 	}
@@ -126,7 +124,7 @@
 		ctx2.lineWidth = options.width;
 
 		//interesting loop
-		for (var i=5; i>=0;i--) {
+		for (var i = 5; i--;) {
 			ctx2.lineTo(0,length);
 			ctx2.translate(0,length);
 			ctx2.rotate(Math.PI*2/10);
