@@ -6,7 +6,7 @@
 <h3>Random Radius Opacit</h3>
 <canvas id="myCanvas" width="500," height="300"></canvas>
 
-<h3>Bezier Curve</h3>
+<h3>Randomized Everything</h3>
 <canvas id="bezierCanvas" width="500," height="300"></canvas>
 <script>	
 	// For Just a smooth curve
@@ -65,15 +65,15 @@
 	}
 </script>
 <script>
-	//for Bezier curve
+	//for Randomized everything
 	//source: http://perfectionkills.com/exploring-canvas-drawing-techniques/
 
 	var el = document.getElementById('bezierCanvas'),
-		ctxBzr = el.getContext('2d'), 
+		ctx2 = el.getContext('2d'), 
 		isDrawing, points=[];
 
-	ctxBzr.lineWidth = 3;
-	ctxBzr.lineJoin = ctxBzr.lineCap ='round';
+	ctx2.lineWidth = 3;
+	ctx2.lineJoin = ctx2.lineCap ='round';
 
 	el.onmousedown = function (e) {
 		isDrawing = true;
@@ -84,26 +84,26 @@
 		if(!isDrawing) return;
 		points.push({x:e.clientX, y:e.clientY});
 
-		ctxBzr.clearRect(0,0, ctxBzr.canvas.width, ctxBzr.canvas.height);
+		ctx2.clearRect(0,0, ctx2.canvas.width, ctx2.canvas.height);
 
 		var p1 = points[0],
 			p2 = points[1];
 
-		ctxBzr.beginPath();
-		ctxBzr.moveTo(p1.x, p1.y);
+		ctx2.beginPath();
+		ctx2.moveTo(p1.x, p1.y);
 
 		console.log(points);
 
 		for (var i = 1, len = points.length; i < len; i++) {
 			var midPoint = midPointBtw (p1, p2);
 
-			ctxBzr.quadraticCurveTo(p1.x, p1.y, midPoint.x, midPoint.y);
+			ctx2.quadraticCurveTo(p1.x, p1.y, midPoint.x, midPoint.y);
 			p1= points[i];
 			p2= points[i+1];
 		};
 
-		ctxBzr.lineTo(p1.x, p1.y);
-		ctxBzr.stroke();
+		ctx2.lineTo(p1.x, p1.y);
+		ctx2.stroke();
 	}
 
 	el.onmouseup = function (e) {
@@ -120,5 +120,43 @@
 
 	function getRandomInt(min, max){
 		return Math.floor(Math.random()*(max-min+1))+min;
+	}
+
+	function drawStae(options){
+		var length = 15;
+		ctx2.save();
+		ctx2.translate(options.x, options.y);
+		ctx2.beginPath();
+		ctx2.globalAlpha = options.opacity;
+		ctx2.rotate(Math.PI/180*options.angle);
+		ctx2.scale(options.scale, options.scale);
+		ctx2.strokeStyle = options.color;
+		ctx2.lineWidth = options.width;
+
+		//interesting loop
+		for (var i = 5; i--;) {
+			ctx2.lineTo=(0,length);
+			ctx2.translate(0,length);
+			ctx2.rotate(Math.PI*2/10);
+			ctx2.lineTo(0, -length);
+			ctx2.translate(0, -length);
+			ctx2.rotate(-(Math.PI*6/10));	
+		};
+		ctx2.lineTo(0,length);
+		ctx2.closePath();
+		ctx2.stroke();
+		ctx2.restore();
+	}
+
+	function addRandomPoint (e) {
+		points.push({
+			x:e.clientX,
+			y:e.clientY,
+			angle:getRandomInt(0,180),
+			width:getRandomInt(1,10),
+			opacity:Math.random(),
+			scale:getRandomInt(1,20)/10,
+			color:('rgb('+getRandomInt(0,255)+','+getRandomInt(0,255)+','+getRandomInt(0,255)+')')
+		});
 	}
 </script>
