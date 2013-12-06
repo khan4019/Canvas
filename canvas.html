@@ -68,47 +68,34 @@
 	//for Randomized everything
 	//source: http://perfectionkills.com/exploring-canvas-drawing-techniques/
 
-	var el = document.getElementById('bezierCanvas'),
-		ctx2 = el.getContext('2d'), 
-		isDrawing, points=[];
+	var el2 = document.getElementById('bezierCanvas'),
+		ctx2 = el2.getContext('2d'), 
+		isDrawing2, points2=[];
 
 	ctx2.lineWidth = 3;
 	ctx2.lineJoin = ctx2.lineCap ='round';
 
-	el.onmousedown = function (e) {
-		isDrawing = true;
-		points.push({x:e.clientX, y:e.clientY});
+	el2.onmousedown = function (e) {
+		isDrawing2 = true;
+		addRandomPoint(e);
 	}
 
-	el.onmousemove = function (e) {
-		if(!isDrawing) return;
-		points.push({x:e.clientX, y:e.clientY});
+	el2.onmousemove = function (e) {
+		if(!isDrawing2) return;
+		
+		addRandomPoint(e);
 
 		ctx2.clearRect(0,0, ctx2.canvas.width, ctx2.canvas.height);
 
-		var p1 = points[0],
-			p2 = points[1];
 
-		ctx2.beginPath();
-		ctx2.moveTo(p1.x, p1.y);
-
-		console.log(points);
-
-		for (var i = 1, len = points.length; i < len; i++) {
-			var midPoint = midPointBtw (p1, p2);
-
-			ctx2.quadraticCurveTo(p1.x, p1.y, midPoint.x, midPoint.y);
-			p1= points[i];
-			p2= points[i+1];
+		for (var i = 1, len = points2.length; i < len; i++) {
+			drawStar(points2[i]);
 		};
-
-		ctx2.lineTo(p1.x, p1.y);
-		ctx2.stroke();
 	}
 
-	el.onmouseup = function (e) {
-		isDrawing = false;
-		points.length =0;
+	el2.onmouseup = function (e) {
+		isDrawing2 = false;
+		points2.length =0;
 	}
 
 	function midPointBtw(p1, p2){
@@ -122,7 +109,7 @@
 		return Math.floor(Math.random()*(max-min+1))+min;
 	}
 
-	function drawStae(options){
+	function drawStar(options){
 		var length = 15;
 		ctx2.save();
 		ctx2.translate(options.x, options.y);
@@ -134,8 +121,8 @@
 		ctx2.lineWidth = options.width;
 
 		//interesting loop
-		for (var i = 5; i--;) {
-			ctx2.lineTo=(0,length);
+		for (var i=5; i>=0;i--) {
+			ctx2.lineTo(0,length);
 			ctx2.translate(0,length);
 			ctx2.rotate(Math.PI*2/10);
 			ctx2.lineTo(0, -length);
@@ -149,7 +136,7 @@
 	}
 
 	function addRandomPoint (e) {
-		points.push({
+		points2.push({
 			x:e.clientX,
 			y:e.clientY,
 			angle:getRandomInt(0,180),
